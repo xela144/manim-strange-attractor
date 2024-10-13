@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef, useEffect, useMemo, useState } from 'react';
+import React, { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame, extend, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -37,7 +37,7 @@ function LorenzSystem(): JSX.Element {
     beta,
     dt,
     numTraces,
-    traceLength,
+    // traceLength,
     showAxes,
     rotationSpeed,
     animationSpeed,
@@ -101,7 +101,7 @@ function LorenzSystem(): JSX.Element {
     return {x, y, z};
   };
 
-  useFrame((state) => {
+  useFrame(() => {
     if (isAnimating) {
       lorenzSystem.forEach((trace, index) => {
         for (let i = 0; i < animationSpeed; i++) {
