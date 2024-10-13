@@ -207,11 +207,14 @@ function onWindowResize() {
 
 function generateRandomStartPoints(numPoints) {
     const points = [];
+    const randX = Math.random() * 20;
+    const randY = Math.random() * 20;
+    const randZ = Math.random() * 20;
     for (let i = 0; i < numPoints; i++) {
         points.push({
-            x: (Math.random()) * 0.02, // Random x close to 0
-            y: (Math.random()) * 0.02, // Random y close to 0
-            z: (Math.random()) * 0.02  // Random z close to 0
+            x: randX + (Math.random()) * 0.02, // Random x close to 0
+            y: randY + (Math.random()) * 0.02, // Random y close to 0
+            z: randZ + (Math.random()) * 0.02  // Random z close to 0
         });
     }
     return points;
