@@ -1,6 +1,12 @@
 "use client";
 import React, { useRef, useMemo, useState } from "react";
-import { Canvas, useFrame, extend, useThree } from "@react-three/fiber";
+import {
+  Canvas,
+  ReactThreeFiber,
+  useFrame,
+  extend,
+  useThree,
+} from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three-stdlib";
 import { useControls, button } from "leva";
