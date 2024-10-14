@@ -1,9 +1,9 @@
-'use client'
-import React, { useRef, useMemo, useState } from 'react';
-import { Canvas, useFrame, extend, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { useControls, button } from 'leva';
+"use client";
+import React, { useRef, useMemo, useState } from "react";
+import { Canvas, useFrame, extend, useThree } from "@react-three/fiber";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { useControls, button } from "leva";
 
 extend({ OrbitControls });
 
@@ -27,7 +27,7 @@ function LorenzSystem(): JSX.Element {
 
   const initialSigma = 10;
   const initialRho = 28;
-  const initialBeta = 8/3;
+  const initialBeta = 8 / 3;
 
   const [isAnimating, setIsAnimating] = useState<boolean>(true);
 
@@ -51,7 +51,7 @@ function LorenzSystem(): JSX.Element {
       value: Math.log10(1000),
       min: Math.log10(100),
       max: Math.log10(100000),
-      onChange: (value: number) => Math.pow(10, value)
+      onChange: (value: number) => Math.pow(10, value),
     },
     showAxes: false,
     rotationSpeed: { value: 0.001, min: -0.05, max: 0.05 },
@@ -62,7 +62,7 @@ function LorenzSystem(): JSX.Element {
     toggleAnimation: button(() => setIsAnimating(!isAnimating)),
     clearTraces: button(() => {
       // Clear traces logic here
-    })
+    }),
   });
 
   const lorenzSystem = useMemo<LorenzTrace[]>(() => {
@@ -73,22 +73,24 @@ function LorenzSystem(): JSX.Element {
       const randZ = Math.random() * 20;
       for (let i = 0; i < numPoints; i++) {
         points.push({
-          x: randX + (Math.random()) * 0.02,
-          y: randY + (Math.random()) * 0.02,
-          z: randZ + (Math.random()) * 0.02
+          x: randX + Math.random() * 0.02,
+          y: randY + Math.random() * 0.02,
+          z: randZ + Math.random() * 0.02,
         });
       }
       return points;
     };
 
     const startPoints = generateRandomStartPoints(numTraces);
-    return Array(numTraces).fill(null).map((_, i) => ({
-      positions: new Float32Array(100000 * 3),
-      currentIndex: 0,
-      x: startPoints[i % startPoints.length].x,
-      y: startPoints[i % startPoints.length].y,
-      z: startPoints[i % startPoints.length].z
-    }));
+    return Array(numTraces)
+      .fill(null)
+      .map((_, i) => ({
+        positions: new Float32Array(100000 * 3),
+        currentIndex: 0,
+        x: startPoints[i % startPoints.length].x,
+        y: startPoints[i % startPoints.length].y,
+        z: startPoints[i % startPoints.length].z,
+      }));
   }, [numTraces]);
 
   const lorenzDerivatives = (x: number, y: number, z: number): LorenzPoint => {
@@ -97,15 +99,15 @@ function LorenzSystem(): JSX.Element {
     const dz = x * y - beta * z;
     x = dx;
     y = dy;
-    z = dz
-    return {x, y, z};
+    z = dz;
+    return { x, y, z };
   };
 
   useFrame(() => {
     if (isAnimating) {
       lorenzSystem.forEach((trace, index) => {
         for (let i = 0; i < animationSpeed; i++) {
-          const {x, y, z} = lorenzDerivatives(trace.x, trace.y, trace.z);
+          const { x, y, z } = lorenzDerivatives(trace.x, trace.y, trace.z);
           trace.x += x * dt;
           trace.y += y * dt;
           trace.z += z * dt;
@@ -114,11 +116,13 @@ function LorenzSystem(): JSX.Element {
           trace.positions[trace.currentIndex * 3 + 1] = trace.y;
           trace.positions[trace.currentIndex * 3 + 2] = trace.z;
 
-          trace.currentIndex = (trace.currentIndex + 1) % (trace.positions.length / 3);
+          trace.currentIndex =
+            (trace.currentIndex + 1) % (trace.positions.length / 3);
         }
 
         if (lineRefs.current[index]) {
-          lineRefs.current[index].geometry.attributes.position.needsUpdate = true;
+          lineRefs.current[index].geometry.attributes.position.needsUpdate =
+            true;
         }
       });
     }
@@ -137,7 +141,11 @@ function LorenzSystem(): JSX.Element {
             <sphereGeometry args={[0.25, 16, 16]} />
             <meshBasicMaterial color={0x222222} />
           </mesh>
-          <line ref={(el) => { if (el) lineRefs.current[index] = el; }}>
+          <line
+            ref={(el) => {
+              if (el) lineRefs.current[index] = el;
+            }}
+          >
             <bufferGeometry>
               <bufferAttribute
                 attach="attributes-position"
@@ -161,18 +169,18 @@ function Controls(): JSX.Element {
 
 export default function LorenzAttractor(): JSX.Element {
   const canvasStyle: React.CSSProperties = {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-  }
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+  };
 
   return (
     <div style={canvasStyle}>
       <Canvas camera={{ position: [0, -100, 50], fov: 75 }}>
         <color attach="background" args={[1, 1, 1]} />
-          <LorenzSystem />
+        <LorenzSystem />
         <Controls />
       </Canvas>
     </div>
