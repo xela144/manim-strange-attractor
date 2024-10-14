@@ -2,10 +2,31 @@
 import React, { useRef, useMemo, useState } from "react";
 import { Canvas, useFrame, extend, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three-stdlib";
 import { useControls, button } from "leva";
 
+extend({ Line_: THREE.Line });
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      line_: ReactThreeFiber.Object3DNode<THREE.Line, typeof THREE.Line>;
+    }
+  }
+}
+
 extend({ OrbitControls });
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      orbitControls: ReactThreeFiber.Object3DNode<
+        OrbitControls,
+        typeof OrbitControls
+      >;
+    }
+  }
+}
 
 interface LorenzPoint {
   x: number;
@@ -141,7 +162,7 @@ function LorenzSystem(): JSX.Element {
             <sphereGeometry args={[0.25, 16, 16]} />
             <meshBasicMaterial color={0x222222} />
           </mesh>
-          <line
+          <line_
             ref={(el) => {
               if (el) lineRefs.current[index] = el;
             }}
@@ -155,7 +176,7 @@ function LorenzSystem(): JSX.Element {
               />
             </bufferGeometry>
             <lineBasicMaterial color={0x000000} />
-          </line>
+          </line_>
         </React.Fragment>
       ))}
     </group>
